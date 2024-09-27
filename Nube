@@ -1,0 +1,34 @@
+!pip install --upgrade google-cloud-storage
+
+from google.colab import auth
+# Resto de Codigo
+auth.authenticate_user()
+
+from google.cloud import storage
+import os
+from google.colab import auth
+
+# Configurar el cliente
+client = storage.Client()
+
+# Acceder al bucket y archivo
+bucket = client.get_bucket('bigbata_buckets')
+blop = bucket.blob('summer.csv')
+blop.download_to_filename('summer.csv')
+
+# Cargar Archivo descargado en un DataFrame de Pandas
+import pandas as pd
+df = pd.read_csv('summer.csv')
+df.head()
+
+# Resumen estadistico de los datos
+df.describe()
+
+# Filtrado de datos
+datos_filtrados = df[df['Country'] == 'COL']
+print(datos_filtrados.head())
+
+# Graficos
+import matplotlib.pyplot as plt
+df['Country'].hist(bins=50)
+plt.show()
